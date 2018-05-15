@@ -2,6 +2,7 @@
 # [2018-05-14] Challenge #361 [Easy] Tally Program
 
 import collections
+from operator import itemgetter
 
 INPUT_DATA = [
     'abcde',
@@ -22,7 +23,7 @@ if __name__ == '__main__':
             else:
                 points[e.lower()] = points.get(e.lower(), 0) - 1
 
-        sorted_points = collections.OrderedDict(sorted(points.items()))
+        sorted_points = collections.OrderedDict(sorted(points.items(), key=itemgetter(1), reverse=True))
         print(sorted_points)
 
 
