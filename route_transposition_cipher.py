@@ -1,6 +1,7 @@
 
 DATA_1 = 'This is an example'
 
+
 # TODO write a unite test for this function
 def string_to_alpha_table(text: str, xdim: int, ydim: int):
 
