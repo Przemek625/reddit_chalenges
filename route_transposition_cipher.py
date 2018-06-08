@@ -3,6 +3,8 @@
 
 DATA_1 = 'This is an example'
 
+DATA_2 = 'why is this professor so boring omg'
+
 
 # TODO write a unite test for this function
 def string_to_alpha_table(text: str, xdim: int, ydim: int):
@@ -21,23 +23,19 @@ def string_to_alpha_table(text: str, xdim: int, ydim: int):
         table_to_partition.extend(supplementary_table)
 
     table = list([] for _ in range(ydim))
-
-    print(table)
-
     current_dim = 0
 
-    print(table_to_partition)
-
     for index, e in enumerate(table_to_partition, start=1):
-        print(current_dim, index, e)
-
-        if index % xdim == 0 and index != dimension:
-            current_dim += 1
         table[current_dim].append(e)
+
+        if index % xdim == 0:
+            current_dim += 1
 
     return table
 
 
 if __name__ == '__main__':
     print(string_to_alpha_table(DATA_1, 6, 3))
+
+    print(string_to_alpha_table(DATA_2, 6, 5))
 
