@@ -34,6 +34,12 @@ def string_to_alpha_table(text: str, xdim: int, ydim: int):
     return table
 
 
+# TODO in the future change the signature of method to take string instead of table.
+def encrypt_note(table, algorithm):
+
+    assert algorithm in ['clockwise', 'counterclockwise']
+
+
 if __name__ == '__main__':
     print(string_to_alpha_table(DATA_1, 6, 3))
 
