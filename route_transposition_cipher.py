@@ -8,26 +8,14 @@ DATA_2 = 'why is this professor so boring omg'
 DATA_3 = 'For lunch let\'s have peanut-butter and bologna sandwiches'
 
 
-def string_to_alpha_table1(text: str, xdim: int, ydim: int):
-    table_to_partition = [e.upper() for e in text if e.isalpha()]
-
-    table_to_partition_length = len(table_to_partition)
-    dimension = xdim * ydim
-
-    if table_to_partition_length < dimension:
-        supplementary_table = ['X'] * (dimension - table_to_partition_length)
-
-        table_to_partition.extend(supplementary_table)
-
-    return table_to_partition
-
-
 # TODO write a unite test for this function
-def string_to_alpha_table2(text: str, xdim: int, ydim: int):
+def string_to_alpha_table(text: str, xdim: int, ydim: int):
     table_to_partition = [e.upper() for e in text if e.isalpha()]
 
     table_to_partition_length = len(table_to_partition)
     dimension = xdim * ydim
+
+    assert table_to_partition_length <= dimension
 
     if table_to_partition_length < dimension:
         supplementary_table = ['X'] * (dimension - table_to_partition_length)
@@ -46,43 +34,35 @@ def string_to_alpha_table2(text: str, xdim: int, ydim: int):
     return table
 
 
-def encrypt(data, xdim, ydim):
+# TODO add 'counterclockwise' algorithm
+def encrypt(text: str, algorithm, xdim: int, ydim: int):
 
-    encrypted = []
-    X = 0
-    Z = 0
-    c = 1
-    start, end = xdim - 1, xdim * (ydim - X) - 1
-
-    while(True):
-
-        encrypted.extend(data[start: end: 4])
-
-        start, end = end, end - xdim + 1
-        encrypted.extend(data[start: end: -1])
-
-        start, end = end, end - xdim * (ydim - 1 - X)
-        encrypted.extend(data[start: end: -4])
-
-        start, end = end, end + xdim - 1 - 1
-        encrypted.extend(data[start: end: 1])
-        start, end = end, xdim * (ydim - X) - 1
-        print(start, end)
-
-        X += 1
-        c += 1
-        print(encrypted)
-
-        if (c == 3):
-            break
-
-    return encrypted
-
-
-# TODO in the future change the signature of method to take string instead of table.
-def encrypt_note(table, algorithm):
     assert algorithm in ['clockwise', 'counterclockwise']
 
+    data = string_to_alpha_table(text, xdim, ydim)
 
+    encrypted = []
+
+    first_row, first_col, last_row, last_col = 0, 0, ydim - 1, xdim - 1
+
+    while last_row >= first_row and last_col >= first_col:
+
+        if algorithm == 'clockwise':
+            encrypted.extend(data[k][last_col] for k in range(first_row, last_row + 1))
+            encrypted.extend(data[last_row][k] for k in range(last_col - 1, first_col - 1, -1))
+            encrypted.extend(data[k][first_col] for k in range(last_row - 1, first_row - 1, -1))
+            encrypted.extend(data[first_row][k] for k in range(first_col + 1, last_col))
+        else:
+            raise NotImplementedError
+
+        last_row -= 1
+        last_col -= 1
+        first_row += 1
+        first_col += 1
+
+    return ''.join(encrypted)
+
+
+# TODO add more cases
 if __name__ == '__main__':
-    print(encrypt(string_to_alpha_table1(DATA_3, 4, 12), 4, 12))
+    print(encrypt(DATA_3, 'clockwise', 4, 12))
